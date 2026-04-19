@@ -1,35 +1,32 @@
 package kr.ac.hansung.cse.service;
 
+import kr.ac.hansung.cse.exception.DuplicateCategoryException;
 import kr.ac.hansung.cse.model.Category;
 import kr.ac.hansung.cse.repository.CategoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class CategoryService {
+    private final CategoryRepository categoryRepository;
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    public List<Category> getAllCategories() { return categoryRepository.findAll(); }
 
-    public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+    @Transactional
+    public void createCategory(String name) {
+        categoryRepository.findByName(name)
+                .ifPresent(c -> { throw new DuplicateCategoryException(name); });
+        categoryRepository.save(new Category(name));
     }
 
-    public void addCategory(String name) {
-        Category category = new Category(name);
-        categoryRepository.save(category);
-    }
-
+    @Transactional
     public void deleteCategory(Long id) {
-        // [중요] 해당 카테고리를 사용 중인 상품이 있는지 먼저 확인
         long count = categoryRepository.countProductsByCategoryId(id);
-        if (count > 0) {
-            throw new RuntimeException("해당 카테고리에 등록된 상품이 있어 삭제할 수 없습니다.");
-        }
+        if (count > 0) throw new IllegalStateException("상품 " + count + "개가 연결되어 있어 삭제할 수 없습니다.");
         categoryRepository.delete(id);
     }
 }
