@@ -1,44 +1,35 @@
 package kr.ac.hansung.cse.repository;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import kr.ac.hansung.cse.model.Category;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public class CategoryRepository {
-
-    @Autowired
+    @PersistenceContext
     private EntityManager em;
 
     public List<Category> findAll() {
         return em.createQuery("select c from Category c", Category.class).getResultList();
     }
 
-    public void save(Category category) {
-        em.persist(category);
-    }
-
     public Optional<Category> findByName(String name) {
-        List<Category> result = em.createQuery("select c from Category c where c.name = :name", Category.class)
-                .setParameter("name", name)
-                .getResultList();
-        return result.stream().findFirst();
+        List<Category> r = em.createQuery("SELECT c FROM Category c WHERE c.name = :name", Category.class)
+                .setParameter("name", name).getResultList();
+        return r.isEmpty() ? Optional.empty() : Optional.of(r.get(0));
     }
 
     public long countProductsByCategoryId(Long categoryId) {
-        return em.createQuery("select count(p) from Product p where p.category.id = :categoryId", Long.class)
-                .setParameter("categoryId", categoryId)
-                .getSingleResult();
+        return em.createQuery("SELECT COUNT(p) FROM Product p WHERE p.category.id = :id", Long.class)
+                .setParameter("id", categoryId).getSingleResult();
     }
 
+    public void save(Category category) { em.persist(category); }
     public void delete(Long id) {
-        Category category = em.find(Category.class, id);
-        if (category != null) {
-            em.remove(category);
-        }
+        Category c = em.find(Category.class, id);
+        if (c != null) em.remove(c);
     }
 }
