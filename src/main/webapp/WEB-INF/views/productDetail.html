@@ -82,6 +82,10 @@
         </div>
 
     </div>
-
+    <hr>
+    <footer>
+        <p th:text="${'실습 수행 일시: ' + #temporals.format(#temporals.createNow(), 'yyyy년 MM월 dd일 (E) a hh:mm:ss')}"></p>
+        <p>학번: 2371363 | 성명: 동혜린</p>
+    </footer>
 </body>
 </html>
