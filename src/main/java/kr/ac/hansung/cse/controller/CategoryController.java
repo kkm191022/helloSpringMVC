@@ -30,16 +30,22 @@ public class CategoryController {
     }
 
     @PostMapping("/create")
-    public String createCategory(@Valid @ModelAttribute CategoryForm categoryForm,
+    public String createCategory(@Valid @ModelAttribute("categoryForm") CategoryForm categoryForm,
                                  BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-        if (bindingResult.hasErrors()) return "categoryForm";
-        try {
-            categoryService.createCategory(categoryForm.getName());
-            redirectAttributes.addFlashAttribute("successMessage", "등록 완료");
-        } catch (DuplicateCategoryException e) {
-            bindingResult.rejectValue("name", "duplicate", e.getMessage());
+
+        if (bindingResult.hasErrors()) {
             return "categoryForm";
         }
+
+        try {
+            categoryService.createCategory(categoryForm.getName());
+            redirectAttributes.addFlashAttribute("successMessage", "카테고리가 성공적으로 등록되었습니다.");
+        } catch (DuplicateCategoryException e) {
+
+            bindingResult.rejectValue("name", "duplicate", "이미 존재하는 카테고리 이름입니다.");
+            return "categoryForm";
+        }
+
         return "redirect:/categories";
     }
 

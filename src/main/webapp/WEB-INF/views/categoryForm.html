@@ -10,19 +10,25 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card shadow">
-                <div class="card-header bg-success text-white">
+                <div class="card-header bg-primary text-white">
                     <h3 class="card-title mb-0">새 카테고리 등록</h3>
                 </div>
                 <div class="card-body">
                     <form th:action="@{/categories/create}" th:object="${categoryForm}" method="post">
                         <div class="mb-3">
                             <label for="name" class="form-label">카테고리 이름</label>
-                            <input type="text" th:field="*{name}" class="form-control" id="name"
-                                   placeholder="예: 가전제품, 의류" required>
+                            <input type="text" th:field="*{name}" class="form-control"
+                                   th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''"
+                                   id="name" placeholder="카테고리명을 입력하세요">
+
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">
+                                에러 메시지 출력 영역
+                            </div>
                         </div>
-                        <div class="text-center">
+
+                        <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-success">등록하기</button>
-                            <a th:href="@{/categories}" class="btn btn-secondary">취소</a>
+                            <a th:href="@{/categories}" class="btn btn-outline-secondary">목록으로 돌아가기</a>
                         </div>
                     </form>
                 </div>
@@ -30,6 +36,7 @@
         </div>
     </div>
 </div>
+
 <footer class="mt-5 py-3 bg-light text-center border-top">
     <p th:text="${'실습 수행 일시: ' + #temporals.format(#temporals.createNow(), 'yyyy-MM-dd HH:mm:ss') + ' | 학번: 2371363 | 성명: 동혜린'}"></p>
 </footer>
