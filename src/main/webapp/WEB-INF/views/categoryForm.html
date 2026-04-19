@@ -30,5 +30,8 @@
         </div>
     </div>
 </div>
+<footer class="mt-5 py-3 bg-light text-center border-top">
+    <p th:text="${'실습 수행 일시: ' + #temporals.format(#temporals.createNow(), 'yyyy-MM-dd HH:mm:ss') + ' | 학번: 2371363 | 성명: 동혜린'}"></p>
+</footer>
 </body>
 </html>

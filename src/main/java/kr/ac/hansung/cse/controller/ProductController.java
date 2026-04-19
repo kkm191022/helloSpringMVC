@@ -1,32 +1,38 @@
 package kr.ac.hansung.cse.controller;
 
 import jakarta.validation.Valid;
-import kr.ac.hansung.cse.model.Category;
 import kr.ac.hansung.cse.model.Product;
 import kr.ac.hansung.cse.service.CategoryService;
 import kr.ac.hansung.cse.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @Controller
 @RequestMapping("/products")
+@RequiredArgsConstructor
 public class ProductController {
-
-    @Autowired
-    private ProductService productService;
-
-    @Autowired
-    private CategoryService categoryService;
+    private final ProductService productService;
+    private final CategoryService categoryService;
 
     @GetMapping
-    public String listProducts(Model model) {
-        List<Product> products = productService.getAllProducts();
-        model.addAttribute("products", products); // HTML의 th:each="product : ${products}"와 매칭됨
+    public String listProducts(@RequestParam(required = false) String keyword,
+                               @RequestParam(required = false) Long categoryId, Model model) {
+        List<Product> products;
+        if (keyword != null && !keyword.isBlank()) {
+            products = productService.searchByName(keyword);
+        } else if (categoryId != null) {
+            products = productService.searchByCategory(categoryId);
+        } else {
+            products = productService.getAllProducts();
+        }
+        model.addAttribute("products", products);
+        model.addAttribute("categories", categoryService.getAllCategories());
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("categoryId", categoryId);
         return "productList";
     }
 
@@ -48,7 +54,7 @@ public class ProductController {
     }
 
     @PostMapping("/delete/{id}")
-    public String deleteProduct(@PathVariable("id") Long id) {
+    public String deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
         return "redirect:/products";
     }
