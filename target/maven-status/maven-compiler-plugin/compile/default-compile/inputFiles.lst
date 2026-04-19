@@ -3,6 +3,7 @@
 /Users/hyerin/IdeaProjects/hr/helloSpringMVC/src/main/java/kr/ac/hansung/cse/config/WebConfig.java
 /Users/hyerin/IdeaProjects/hr/helloSpringMVC/src/main/java/kr/ac/hansung/cse/controller/CategoryController.java
 /Users/hyerin/IdeaProjects/hr/helloSpringMVC/src/main/java/kr/ac/hansung/cse/controller/ProductController.java
+/Users/hyerin/IdeaProjects/hr/helloSpringMVC/src/main/java/kr/ac/hansung/cse/exception/DuplicateCategoryException.java
 /Users/hyerin/IdeaProjects/hr/helloSpringMVC/src/main/java/kr/ac/hansung/cse/model/Category.java
 /Users/hyerin/IdeaProjects/hr/helloSpringMVC/src/main/java/kr/ac/hansung/cse/model/CategoryForm.java
 /Users/hyerin/IdeaProjects/hr/helloSpringMVC/src/main/java/kr/ac/hansung/cse/model/Product.java
