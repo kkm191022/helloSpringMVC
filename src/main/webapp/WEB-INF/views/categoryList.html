@@ -8,12 +8,15 @@
 <body>
 <div class="container mt-5">
   <h2>카테고리 목록</h2>
+
+  <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
   <div class="text-end mb-3">
     <a th:href="@{/categories/create}" class="btn btn-primary">새 카테고리 등록</a>
     <a th:href="@{/products}" class="btn btn-secondary">상품 목록으로</a>
   </div>
 
-  <table class="table table-bordered table-striped">
+  <table class="table table-bordered table-striped text-center">
     <thead class="table-dark">
     <tr>
       <th>ID</th>
@@ -23,17 +26,17 @@
     </thead>
     <tbody>
     <tr th:each="category : ${categories}">
-      <td th:text="${category.id}">1</td>
-      <td th:text="${category.name}">전자제품</td>
+      <td th:text="${category.id}"></td>
+      <td th:text="${category.name}"></td>
       <td>
-        <form th:action="@{/categories/delete/{id}(id=${category.id})}" method="post" style="display:inline;">
-          <button type="submit" class="btn btn-danger btn-sm"
-                  onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button>
+        <form th:action="@{/categories/delete/{id}(id=${category.id})}" method="post"
+              onsubmit="return confirm('정말 삭제하시겠습니까?');">
+          <button type="submit" class="btn btn-danger btn-sm">삭제</button>
         </form>
       </td>
     </tr>
     <tr th:if="${#lists.isEmpty(categories)}">
-      <td colspan="3" class="text-center">등록된 카테고리가 없습니다.</td>
+      <td colspan="3">등록된 카테고리가 없습니다.</td>
     </tr>
     </tbody>
   </table>

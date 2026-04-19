@@ -9,38 +9,27 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class CategoryService {
 
     @Autowired
     private CategoryRepository categoryRepository;
 
-
     public List<Category> getAllCategories() {
         return categoryRepository.findAll();
     }
 
-
-    @Transactional
-    public void createCategory(String name) {
-
-        categoryRepository.findByName(name).ifPresent(c -> {
-            throw new RuntimeException("이미 존재하는 카테고리입니다: " + name);
-        });
-
+    public void addCategory(String name) {
         Category category = new Category(name);
         categoryRepository.save(category);
     }
 
-
-    @Transactional
     public void deleteCategory(Long id) {
-
+        // [중요] 해당 카테고리를 사용 중인 상품이 있는지 먼저 확인
         long count = categoryRepository.countProductsByCategoryId(id);
         if (count > 0) {
-            throw new IllegalStateException("해당 카테고리를 사용하는 상품이 " + count + "개 있어 삭제할 수 없습니다.");
+            throw new RuntimeException("해당 카테고리에 등록된 상품이 있어 삭제할 수 없습니다.");
         }
-
         categoryRepository.delete(id);
     }
 }
