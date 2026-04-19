@@ -41,7 +41,7 @@ public class DbConfig {
 
     private Properties hibernateProperties() {
         Properties props = new Properties();
-        // 테이블 자동 생성/수정 활성화
+
         props.setProperty("hibernate.hbm2ddl.auto", "update");
         props.setProperty("hibernate.show_sql", "true");
         props.setProperty("hibernate.format_sql", "true");

@@ -28,7 +28,6 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    // [수정] 외부(Controller)에서 호출 가능하도록 public으로 변경
     public Product() {
     }
 

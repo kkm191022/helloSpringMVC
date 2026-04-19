@@ -3,11 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--
-        th:text 를 <title>에 사용:
-        페이지 제목에 상품명을 동적으로 포함합니다.
-        ||문자열 리터럴 치환|| (Literal Substitution): 문자열 연결의 간편한 표현
-    -->
+
     <title th:text="|상품 상세 - ${product.name}|">상품 상세</title>
     <style>
         body { font-family: 'Malgun Gothic', Arial, sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; color: #333; }
@@ -28,31 +24,21 @@
 
     <h1>상품 상세 정보</h1>
 
-    <!-- th:href 의 @{} 표현식: 컨텍스트 경로를 자동으로 처리합니다 -->
+
     <a class="back-btn" th:href="@{/products}">← 목록으로 돌아가기</a>
 
-    <!--
-        th:object="${product}":
-        이 블록 내에서 *{...} 선택 변수 표현식을 사용할 수 있습니다.
-        *{name} == ${product.name} (th:object 지정 후 *{} 사용)
-        th:object는 폼 바인딩에도 사용되지만, 일반 표시에도 편리합니다.
-    -->
     <div class="detail-card" th:object="${product}">
 
         <div class="detail-row">
             <span class="detail-label">상품 ID</span>
             <span class="detail-value">
-                <!--
-                    *{id}: th:object="${product}"가 지정되어 있으므로
-                    ${product.id}와 동일합니다.
-                -->
+
                 <span class="id-badge" th:text="'#' + *{id}">#1</span>
             </span>
         </div>
 
         <div class="detail-row">
             <span class="detail-label">상품명</span>
-            <!-- *{name} → product.getName() 호출 -->
             <span class="detail-value" th:text="*{name}">상품명</span>
         </div>
 
@@ -71,21 +57,11 @@
 
         <div class="detail-row">
             <span class="detail-label">상품 설명</span>
-            <!--
-                th:utext: unescaped text (HTML 이스케이핑 없이 출력)
-                          HTML 태그가 포함된 내용일 때 사용하지만 XSS 위험 주의!
-                th:text:  escaped text (HTML 이스케이핑 적용) - 일반적으로 권장
-                여기서는 plain text 설명이므로 th:text 사용
-            -->
             <span class="detail-value description-value"
                   th:text="*{description}">상품 설명이 여기에 표시됩니다.</span>
         </div>
 
     </div>
-    <hr>
-    <footer>
-        <p th:text="${'실습 수행 일시: ' + #temporals.format(#temporals.createNow(), 'yyyy년 MM월 dd일 (E) a hh:mm:ss')}"></p>
-        <p>학번: 2371363 | 성명: 동혜린</p>
-    </footer>
+
 </body>
 </html>
