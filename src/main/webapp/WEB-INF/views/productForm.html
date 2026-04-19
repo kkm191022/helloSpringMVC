@@ -1,91 +1,49 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>새 상품 등록 - Product Management</title>
-    <style>
-        body { font-family: 'Malgun Gothic', Arial, sans-serif; max-width: 700px; margin: 40px auto; padding: 0 20px; color: #333; }
-        h1 { border-bottom: 2px solid #4a90d9; padding-bottom: 10px; color: #2c3e50; }
-        .back-btn { display: inline-block; padding: 8px 16px; background: #6c757d; color: white; text-decoration: none; border-radius: 4px; margin-bottom: 24px; }
-        .form-group { margin-bottom: 20px; }
-        label { display: block; font-weight: bold; margin-bottom: 6px; color: #495057; }
-        input[type="text"], input[type="number"], textarea, select {
-            width: 100%; padding: 10px 12px; border: 1px solid #ced4da;
-            border-radius: 4px; font-size: 1em; box-sizing: border-box;
-            font-family: inherit;
-        }
-        input:focus, textarea:focus, select:focus {
-            outline: none; border-color: #4a90d9; box-shadow: 0 0 0 3px rgba(74,144,217,0.15);
-        }
-        textarea { height: 120px; resize: vertical; }
-        .btn-submit { background: #4a90d9; color: white; border: none; padding: 12px 32px; font-size: 1em; border-radius: 4px; cursor: pointer; }
-        .btn-submit:hover { background: #357abd; }
-        .hint { font-size: 0.85em; color: #6c757d; margin-top: 4px; }
-        .required { color: #e74c3c; }
-    </style>
+    <title>Create Product</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">새 상품 등록</h3>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/products/create}" th:object="${product}" method="post">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">상품명</label>
+                            <input type="text" th:field="*{name}" class="form-control" id="name" required>
+                        </div>
 
-<h1>새 상품 등록</h1>
+                        <div class="mb-3">
+                            <label for="category" class="form-label">카테고리 선택</label>
+                            <select th:field="*{category.id}" class="form-select" id="category" required>
+                                <option value="">-- 카테고리를 선택하세요 --</option>
+                                <option th:each="cat : ${categories}"
+                                        th:value="${cat.id}"
+                                        th:text="${cat.name}">카테고리</option>
+                            </select>
+                        </div>
 
-<a class="back-btn" th:href="@{/products}">← 목록으로 돌아가기</a>
+                        <div class="mb-3">
+                            <label for="price" class="form-label">가격</label>
+                            <input type="number" th:field="*{price}" class="form-control" id="price" required>
+                        </div>
 
-<form th:action="@{/products/create}" th:object="${product}" method="post">
-
-    <div class="form-group">
-        <label for="name">
-            상품명 <span class="required">*</span>
-        </label>
-        <input type="text" id="name" th:field="*{name}" placeholder="상품명을 입력하세요" required />
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">등록하기</button>
+                            <a th:href="@{/products}" class="btn btn-secondary">취소</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="form-group">
-        <label for="category">카테고리</label>
-        <select id="category" th:field="*{category}">
-            <option value="">-- 카테고리 선택 --</option>
-            <option value="전자제품">전자제품</option>
-            <option value="식품">식품</option>
-            <option value="의류">의류</option>
-            <option value="도서">도서</option>
-            <option value="스포츠">스포츠</option>
-            <option value="가구">가구</option>
-            <option value="기타">기타</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="price">
-            가격 <span class="required">*</span>
-        </label>
-        <input type="number"
-               id="price"
-               th:field="*{price}"
-               placeholder="0"
-               min="0"
-               step="100"
-               required />
-        <p class="hint">단위: 원(KRW). 100원 단위로 입력하세요.</p>
-    </div>
-
-    <div class="form-group">
-        <label for="description">상품 설명</label>
-        <textarea id="description"
-                  th:field="*{description}"
-                  placeholder="상품에 대한 설명을 입력하세요..."></textarea>
-    </div>
-
-    <div class="form-group">
-        <button type="submit" class="btn-submit">상품 등록</button>
-    </div>
-
-</form>
-
-<hr>
-<footer>
-    <p th:text="${'실습 수행 일시: ' + #temporals.format(#temporals.createNow(), 'yyyy년 MM월 dd일 (E) a hh:mm:ss')}"></p>
-    <p>학번: 2371363 | 성명: 동혜린</p>
-</footer>
-
+</div>
 </body>
 </html>
