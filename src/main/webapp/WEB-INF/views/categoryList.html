@@ -9,7 +9,8 @@
 <div class="container mt-5">
   <h2>카테고리 목록</h2>
 
-  <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+  <div th:if="${errorMessage}" class="alert alert-danger mt-3" th:text="${errorMessage}"></div>
+  <div th:if="${successMessage}" class="alert alert-success mt-3" th:text="${successMessage}"></div>
 
   <div class="text-end mb-3">
     <a th:href="@{/categories/create}" class="btn btn-primary">새 카테고리 등록</a>
@@ -29,7 +30,7 @@
       <td th:text="${category.id}"></td>
       <td th:text="${category.name}"></td>
       <td>
-        <form th:action="@{/categories/delete/{id}(id=${category.id})}" method="post"
+        <form th:action="@{/categories/{id}/delete(id=${category.id})}" method="post"
               onsubmit="return confirm('정말 삭제하시겠습니까?');">
           <button type="submit" class="btn btn-danger btn-sm">삭제</button>
         </form>
@@ -41,6 +42,7 @@
     </tbody>
   </table>
 </div>
+
 <footer class="mt-5 py-3 bg-light text-center border-top">
   <p th:text="${'실습 수행 일시: ' + #temporals.format(#temporals.createNow(), 'yyyy-MM-dd HH:mm:ss') + ' | 학번: 2371363 | 성명: 동혜린'}"></p>
 </footer>
